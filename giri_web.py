@@ -84,7 +84,9 @@ with tab2:
         # Configure the AI
         try:
             genai.configure(api_key=api_key)
-            model = genai.GenerativeModel("gemini-pro")
+            
+            # UPDATED MODEL NAME HERE (FIXED):
+            model = genai.GenerativeModel("gemini-1.5-flash")
 
             # Initialize Chat History
             if "messages" not in st.session_state:
