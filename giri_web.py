@@ -1,7 +1,8 @@
 import streamlit as st
 import requests
 from bs4 import BeautifulSoup
-import google.generativeai as genai
+# 🚨 CHANGED: The import statement is now for the new library
+import google.genai as genai
 
 # --- PAGE CONFIGURATION ---
 st.set_page_config(page_title="GIRI: AI Assistant", page_icon="🤖", layout="wide")
@@ -83,10 +84,11 @@ with tab2:
     else:
         # Configure the AI
         try:
-            genai.configure(api_key=api_key)
+            # 🚨 CHANGED: We use the new genai.Client() instead of configure()
+            client = genai.Client(api_key=api_key)
             
-            # UPDATED MODEL NAME HERE (FIXED):
-            model = genai.GenerativeModel("gemini-1.5-flash")
+            # 🚨 CHANGED: Using the latest model for stability
+            model_name = "gemini-2.5-flash" 
 
             # Initialize Chat History
             if "messages" not in st.session_state:
@@ -108,7 +110,11 @@ with tab2:
                 with st.chat_message("assistant"):
                     with st.spinner("GIRI is thinking..."):
                         try:
-                            response = model.generate_content(prompt)
+                            # 🚨 CHANGED: Using client.models.generate_content() with the new model_name
+                            response = client.models.generate_content(
+                                model=model_name,
+                                contents=prompt
+                            )
                             st.markdown(response.text)
                             st.session_state.messages.append({"role": "assistant", "content": response.text})
                         except Exception as e:
